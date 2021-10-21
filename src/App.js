@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import api from './api';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+
+  state = {
+    filmes: [],
+  }
+
+  async componentDidMount() {
+    const response = await api.get('');
+    this.setState({ filmes: response.data });
+  }
+
+  render() {
+    const { filmes } = this.state;
+    return (
+      <div>
+        <h1>Listar filmes</h1>
+        {filmes.map(filme => (
+          <li key={filme.show.id}>
+            <h2>
+              <strong>Titulo: </strong>
+              {filme.show.name}
+              {filme.show.url}
+            </h2>
+          </li>
+        ))}
+      </div>
+    );
+  }
 }
-
-export default App;
